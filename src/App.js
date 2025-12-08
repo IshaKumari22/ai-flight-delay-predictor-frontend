@@ -26,7 +26,8 @@ function App() {
 
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/metadata")
+    fetch("https://ai-flight-delay-predictor-backend.onrender.com/metadata")
+
       .then(res => res.json())
       .then(data => {
         setMeta(data);
@@ -72,7 +73,8 @@ function App() {
     return;
   }
     try {
-      const response = await fetch("http://127.0.0.1:8000/predict", {
+      const response = await fetch("https://ai-flight-delay-predictor-backend.onrender.com/predict"
+, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
