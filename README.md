@@ -28,9 +28,11 @@ Backend repo link ↓
 
 How to Run Frontend Locally
 Step 1 — Install dependencies
+
 npm install
 
 Step 2 — Start development server
+
 npm start
 
 
