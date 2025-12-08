@@ -42,7 +42,7 @@ function App() {
   const handleChange = (e) => {
   let updated = { ...form, [e.target.name]: e.target.value };
 
-  // when origin + destination selected — auto distance
+
   if (updated.ORIGIN && updated.DEST && meta.route_distance) {
     const key = `${updated.ORIGIN},${updated.DEST}`;
     if (meta.route_distance[key]) {
@@ -85,13 +85,7 @@ function App() {
       const data = await response.json();
       setResult(data);
 
-      // setTimeout(() => {
-      //   const box = document.querySelector(".predict-result");
-      //   if (box) {
-      //     box.scrollIntoView({ behavior: "smooth", block: "center" });
-
-      //   }
-      // },50);
+      
     } catch (error) {
       console.error("Error:", error);
     }
@@ -117,7 +111,7 @@ useEffect(() => {
 </div>
 
 
-        {/* Airline dropdown */}
+      
         <label>Airline:</label>
         <select name="AIRLINE" onChange={handleChange} disabled={loadingMeta}>
   <option value="">{loadingMeta ? "Loading..." : "Select Airline"}</option>
@@ -164,7 +158,7 @@ useEffect(() => {
 
         <br /><br />
 
-        {/* Input fields */}
+       
         <label>Departure Delay (minutes):</label>
         <input name="DEP_DELAY" type="number" onChange={handleChange} />
         <br /><br />
@@ -218,7 +212,7 @@ useEffect(() => {
                   : "N/A"}
               </p>
 
-              {/* Probability meter */}
+           
               <div className="meter">
                 <div
                   className="meter-fill"
