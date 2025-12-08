@@ -1,70 +1,88 @@
-# Getting Started with Create React App
+#  AI Flight Delay Predictor  
+A full-stack + machine learning system that predicts whether a flight will be delayed using real aviation datasets and ML models.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
 
-In the project directory, you can run:
+---
 
-### `npm start`
+##  Project Status  
+**Completed :**
+- Dataset download automation (Kaggle API)
+- Data cleaning pipeline (train_clean.csv)
+- Feature transformation & label creation (is_delayed)
+- ML model training (XGBoost)
+- API development using FastAPI
+- React UI for taking flight inputs and visualizing delay prediction with probability meter
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Data Source  
+Real flight delay data is downloaded automatically using this Kaggle dataset:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Dataset:**  
+[`patrickzel/flight-delay-and-cancellation-dataset-2019-2023`](https://www.kaggle.com/datasets/patrickzel/flight-delay-and-cancellation-dataset-2019-2023)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**File:**  
+`src/download_kaggle_flights.py`
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+##  Data Cleaning 
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The script:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+performs:
 
-## Learn More
+- Selecting important aviation columns  
+- Converting `FL_DATE` to datetime  
+- Filling missing values  
+- Creating target label `is_delayed`  
+- Saving cleaned dataset to `data/processed/train_clean.csv`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
+ Features
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Flight delay probability prediction
+- Dynamic UI with probability meter
+- Auto-distance filling from route mapping
+- Airport + city dropdown selection
+- Cancelled/Diverted logic handling
+- Smooth UI animations & result scrolling
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🖥️ Backend
 
-### Analyzing the Bundle Size
+Using **FastAPI**:
+- `/predict` API endpoint  
+- Returns delay probability & prediction  
+- Connects with model.pkl  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## 🎨 Frontend 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Using **React**:
+- Flight form  
+- Prediction results  
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
+Machine Learning Model
 
-### Deployment
+- XGBoost (best performance for tabular prediction)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Output
 
-### `npm run build` fails to minify
+-Binary target: delayed or not
+- Probability score 0–1
+<img width="847" height="864" alt="Screenshot 2025-12-07 223016" src="https://github.com/user-attachments/assets/b98faeb4-f229-4da7-88c3-2175c4ec0a70" />
+<img width="714" height="869" alt="Screenshot 2025-12-07 223248" src="https://github.com/user-attachments/assets/3717e683-8b03-4f41-b16a-b1d7e1d75b92" />
+<img width="740" height="871" alt="Screenshot 2025-12-07 223348" src="https://github.com/user-attachments/assets/f0f968b2-ff1a-45fa-b923-a6c96f5ecf1e" />
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
