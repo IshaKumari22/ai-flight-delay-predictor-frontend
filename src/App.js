@@ -8,9 +8,9 @@ function App() {
     ORIGIN_CITY: "",
     DEST: "",
     DEST_CITY: "",
-    DEP_DELAY: 0,
-    CANCELLED: 0,
-    DIVERTED: 0,
+    DEP_DELAY: "",
+    CANCELLED: "",
+    DIVERTED: "",
     DISTANCE: 0
   });
   
@@ -20,13 +20,15 @@ function App() {
     origins: [],
     destinations: [],
     origin_cities: [],
-    dest_cities: []
+    dest_cities: [],
+    route_distance: {} 
   });
   const [loadingMeta, setLoadingMeta] = useState(true);
+  const [result, setResult] = useState(null);
 
 
   useEffect(() => {
-    fetch("https://ai-flight-delay-predictor-backend.onrender.com/metadata")
+    fetch("http://127.0.0.1:8000/metadata")
 
       .then(res => res.json())
       .then(data => {
@@ -37,59 +39,80 @@ function App() {
         .catch(err => console.error("Metadata load error:", err));
   }, []);
 
-  const [result, setResult] = useState(null);
 
   const handleChange = (e) => {
   let updated = { ...form, [e.target.name]: e.target.value };
 
 
   if (updated.ORIGIN && updated.DEST && meta.route_distance) {
-    const key = `${updated.ORIGIN},${updated.DEST}`;
-    if (meta.route_distance[key]) {
-      updated.DISTANCE = meta.route_distance[key];
-    }
+  const key = `${updated.ORIGIN},${updated.DEST}`;
+  if (meta.route_distance.hasOwnProperty(key)) {
+    updated.DISTANCE = meta.route_distance[key];
   }
+}
+
 
   setForm(updated);
 };
 
+const predictDelay = async () => {
 
-  const predictDelay = async () => {
-    if (parseInt(form.CANCELLED) === 1) {
+if (
+  form.DEP_DELAY === "" ||
+  form.CANCELLED === "" ||
+  form.DIVERTED === ""
+) {
+  alert("Please fill Departure Delay, Cancelled and Diverted fields first.");
+  return;
+}
+
+if (![0, 1].includes(Number(form.CANCELLED))) {
+  alert("CANCELLED must be 0 or 1.");
+  return;
+}
+
+if (![0, 1].includes(Number(form.DIVERTED))) {
+  alert(" DIVERTED must be 0 or 1.");
+  return;
+}
+
+
+  if (parseInt(form.CANCELLED) === 1) {
     setResult({
+      special: "cancelled",
+      probability: 1,
       is_delayed: 1,
-      probability: 1.0,
-      special: "cancelled"
+      message: "This flight was cancelled — delay prediction does not apply."
     });
     return;
   }
 
   if (parseInt(form.DIVERTED) === 1) {
     setResult({
+      special: "diverted",
+      probability: 1,
       is_delayed: 1,
-      probability: 1.0,
-      special: "diverted"
+      message: "This flight was diverted — delay analysis is irrelevant."
     });
     return;
   }
-    try {
-      const response = await fetch("https://ai-flight-delay-predictor-backend.onrender.com/predict"
-, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
 
-      const data = await response.json();
-      setResult(data);
+  try {
+    const response = await fetch("http://127.0.0.1:8000/predict", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
 
-      
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+    const data = await response.json();
+    setResult(data);
+
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+
 useEffect(() => {
   if (result) {
     setTimeout(() => {
@@ -134,7 +157,7 @@ useEffect(() => {
   </option>
   {meta.origins.map((code, index) => (
     <option key={index} value={code}>
-      {code} — {meta.origin_cities[index] ?? ""}
+      {code} — {meta.origin_cities[index] ?? "City Not Listed"}
     </option>
   ))}
 </select>
@@ -150,7 +173,7 @@ useEffect(() => {
   </option>
   {meta.destinations.map((code, index) => (
     <option key={index} value={code}>
-      {code} — {meta.dest_cities[index] ?? ""}
+      {code} — {meta.dest_cities[index] ?? "City Not Listed"}
     </option>
   ))}
 </select>
@@ -164,12 +187,18 @@ useEffect(() => {
         <br /><br />
 
         <label>Cancelled (0 / 1):</label>
-        <input name="CANCELLED" type="number" onChange={handleChange} />
-        <br /><br />
+          <select name="CANCELLED" onChange={handleChange}>
+          <option value="">Select</option>
+          <option value="0">No</option>
+          <option value="1">Yes</option>
+        </select>        <br /><br />
 
         <label>Diverted (0 / 1):</label>
-        <input name="DIVERTED" type="number" onChange={handleChange} />
-        <br /><br />
+          <select name="DIVERTED" onChange={handleChange}>
+          <option value="">Select</option>
+          <option value="0">No</option>
+          <option value="1">Yes</option>
+        </select>        <br /><br />
 
         <label>Distance (miles):</label>
 <input name="DISTANCE" type="number" value={form.DISTANCE} readOnly />
