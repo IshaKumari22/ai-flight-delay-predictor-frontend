@@ -15,6 +15,7 @@ function App() {
     DISTANCE: 0
   });
   
+const BACKEND_URL = "https://motivated-flexibility-production.up.railway.app";
 
   const [meta, setMeta] = useState({
     airlines: [],
@@ -29,8 +30,8 @@ function App() {
 
 
   useEffect(() => {
-    fetch("https://ai-flight-delay-predictor-backend-1.onrender.com/metadata")
-
+    // fetch("https://ai-flight-delay-predictor-backend-1.onrender.com/metadata")
+       fetch(`${BACKEND_URL}/metadata`)
       .then(res => res.json())
       .then(data => {
         setMeta(data);
@@ -99,7 +100,8 @@ if (![0, 1].includes(Number(form.DIVERTED))) {
   }
 
   try {
-    const response = await fetch("https://ai-flight-delay-predictor-backend-1.onrender.com/predict", {
+    // const response = await fetch("https://ai-flight-delay-predictor-backend-1.onrender.com/predict", {
+    const response = await fetch(`${BACKEND_URL}/predict`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
