@@ -15,7 +15,7 @@ function App() {
     DISTANCE: 0
   });
   
-const BACKEND_URL = "https://motivated-flexibility-production.up.railway.app";
+const BACKEND_URL = "https://ai-flight-delay-predictor-backend-production.up.railway.app/";
 
   const [meta, setMeta] = useState({
     airlines: [],
