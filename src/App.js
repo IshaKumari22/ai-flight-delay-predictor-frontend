@@ -15,7 +15,7 @@ function App() {
     DISTANCE: 0
   });
   
-const BACKEND_URL = "https://ai-flight-delay-predictor-backend-production.up.railway.app/";
+const BACKEND_URL = "https://ai-flight-delay-predictor-backend-production.up.railway.app";
 
   const [meta, setMeta] = useState({
     airlines: [],
@@ -141,7 +141,7 @@ useEffect(() => {
         <label>Airline:</label>
         <select name="AIRLINE" onChange={handleChange} disabled={loadingMeta}>
   <option value="">{loadingMeta ? "Loading..." : "Select Airline"}</option>
-  {meta.airlines.map((d, index) => (
+  {meta.airlines?.map((d, index) => (
     <option key={index}>{d}</option>
   ))}
 </select>
@@ -158,7 +158,7 @@ useEffect(() => {
   <option value="">
     {loadingMeta ? "Loading..." : "Select Origin City"}
   </option>
-  {meta.origins.map((code, index) => (
+  {meta.origins?.map((code, index) => (
     <option key={index} value={code}>
       {code} — {meta.origin_cities[index] ?? "City Not Listed"}
     </option>
@@ -174,7 +174,7 @@ useEffect(() => {
   <option value="">
     {loadingMeta ? "Loading..." : "Select Destination City"}
   </option>
-  {meta.destinations.map((code, index) => (
+  {meta.destinations?.map((code, index) => (
     <option key={index} value={code}>
       {code} — {meta.dest_cities[index] ?? "City Not Listed"}
     </option>
