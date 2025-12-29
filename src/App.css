@@ -71,8 +71,16 @@ label{
   margin: 20px 40px;
   border-radius: 2px;
 }
-input, select {
+ select {
   width: 100%;
+  margin-top: 5px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+input{
+  width: 95%;
   margin-top: 5px;
   padding: 8px 10px;
   border-radius: 8px;
